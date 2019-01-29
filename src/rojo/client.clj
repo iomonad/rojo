@@ -3,7 +3,7 @@
   (:require [clj-http.client :as client]
             [cheshire.core :refer :all]
             [slingshot.slingshot :refer :all]
-            [rojo.utils :as utils]))
+            [rojo.utils :as u]))
 
 (def ^:private *ua*
   "Client User Agent"
@@ -19,7 +19,7 @@
                                    :device_id (str (java.util.UUID/randomUUID))}
                      :content-type "application/x-www-form-urlencoded"
                      :socket-timeout 10000
-                     :conn-timeout 10000
+                     :conn-timeout 10000~
                      :as :json})
        (get :body))
    (catch [:status 401] {}
@@ -67,3 +67,11 @@
    (catch [:status 400] {}
      (throw (ex-info "Invalid server response"
                      {:causes :server-error})))))
+(comment
+  (defmacro reddit-method [name creds req limit]
+    `(def ~name
+       (fn []
+         (if (u/valid-rate? ~limit)
+           (-> (get-request ~creds
+                            (str ~req "?limit=" ~limit))
+               (println)))))))
