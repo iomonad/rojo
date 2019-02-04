@@ -9,7 +9,15 @@
   "Client User Agent"
   "http.clj/+io.trosa.rojo")
 
-(defn ^:private request-token [creds]
+(def ^:private *api-basename*
+  "API url basename"
+  "https://reddit.com/api/v1")
+
+(defn format-call [^String res]
+  "Format correct URL API call"
+  (str *api-basename* res))
+
+(defn request-token [creds]
   "Retrieve access token from the API"
   (try+
    (-> (client/post "https://www.reddit.com/api/v1/access_token"
@@ -19,14 +27,14 @@
                                    :device_id (str (java.util.UUID/randomUUID))}
                      :content-type "application/x-www-form-urlencoded"
                      :socket-timeout 10000
-                     :conn-timeout 10000~
+                     :conn-timeout 10000
                      :as :json})
        (get :body))
    (catch [:status 401] {}
      (throw (ex-info "Invalid credentials."
                      {:causes :unauthorized})))))
 
-(defn ^:private get-request [token target]
+(defn get-request [token target]
   "Compute GET API call with authentificated token header"
   (try+
    (-> (client/get target
@@ -40,7 +48,7 @@
      (throw (ex-info "Invalid server response"
                      {:causes :server-error})))))
 
-(defn ^:private post-request [token target]
+(defn post-request [token target]
   "Compute POST API call with authentificated token header"
   (try+
    (-> (client/post target
@@ -54,7 +62,7 @@
      (throw (ex-info "Invalid server response"
                      {:causes :server-error})))))
 
-(defn ^:private stream-request [token target]
+(defn stream-request [token target]
   "Stream JSON API as lazy sequence (stream)."
   (try+
    (-> (client/get target
