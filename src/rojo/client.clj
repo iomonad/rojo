@@ -34,7 +34,7 @@
      (throw (ex-info "Invalid credentials."
                      {:causes :unauthorized})))))
 
-(defn get-request [token target]
+(defn get-request [token target & {:keys [p] :or {p {}}}]
   "Compute GET API call with authentificated token header"
   (try+
    (-> (client/get target
@@ -44,11 +44,11 @@
                     :conn-timeout 10000
                     :as :json})
        (get :body))
-   (catch [:status 400] {}
-     (throw (ex-info "Invalid server response"
-                     {:causes :server-error})))))
+   (catch [:status 401] {}
+     (throw (ex-info "Invalid server response - Check your creds"
+                     {:causes :unauthorized})))))
 
-(defn post-request [token target]
+(defn post-request [token target & {:keys [p] :or {p {}}}]
   "Compute POST API call with authentificated token header"
   (try+
    (-> (client/post target
@@ -56,6 +56,8 @@
                      :headers {"User-Agent" *ua*}
                      :socket-timeout 10000
                      :conn-timeout 10000
+                     :form-params p
+                     :content-type :json
                      :as :json})
        (get :body))
    (catch [:status 400] {}
