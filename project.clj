@@ -1,5 +1,6 @@
-(defproject rojo "0.1.0"
-  :description "Reddit API wrapper"
+(defproject rojo "0.1.1"
+  :description "Minimal toolkit to interact with Reddit's API,
+                with simplicity in mind."
   :url "https://github.com/iomonad/rojo"
   :license {:name "Eclipse Public License"
             :url "http://www.eclipse.org/legal/epl-v10.html"}
