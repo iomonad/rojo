@@ -1,16 +1,14 @@
 (ns rojo.utils
   "Library utils.")
 
-(defn valid-rate? [rate]
-  "Rate limit guard util"
-  (if (and (integer? rate)
-           (<= 1 rate)
-           (>= 100 rate))
-    rate
-    (throw
-     (ex-info "Invalid rate, must be between [1-100]."
-              {:causes :invalid-rate}))))
+(defn ^:private transduce-post [coll]
+  "Reformat API response to post ID as key"
+  (into (sorted-map)
+        {:post (get-in coll [:name])
+         :content (dissoc coll :name)}))
 
 (defn parse-posts [coll]
   "Parse response into pretty data structure"
-  (map #(get-in % [:data]) coll))
+  (let [raw (map #(get-in % [:data])
+                 coll)]
+    (map transduce-post raw)))

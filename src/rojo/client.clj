@@ -65,7 +65,10 @@
        (get :body))
    (catch [:status 400] {}
      (throw (ex-info "Invalid server response"
-                     {:causes :server-error})))))
+                     {:causes :server-error})))
+   (catch [:status 301] {}
+     (throw (ex-info "Moved permanently"
+                     {:causes :moved-permanently})))))
 
 (defn stream-request [token target]
   "Stream JSON API as lazy sequence (stream)."
@@ -80,11 +83,3 @@
    (catch [:status 400] {}
      (throw (ex-info "Invalid server response"
                      {:causes :server-error})))))
-(comment
-  (defmacro reddit-method [name creds req limit]
-    `(def ~name
-       (fn []
-         (if (u/valid-rate? ~limit)
-           (-> (get-request ~creds
-                            (str ~req "?limit=" ~limit))
-               (println)))))))
