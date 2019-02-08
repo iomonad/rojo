@@ -7,7 +7,6 @@
   "Format subreddit route"
   (str "https://reddit.com/r/" sub "/"))
 
-
 (defn ^:public about
   [credentials & {:keys [sub] :or {sub "all"}}]
   "Return informations about subreddit"
@@ -17,7 +16,6 @@
         "/about.json" :base (sformat sub)))
       :data))
 
-
 (defn ^:public rules
   [credentials & {:keys [sub] :or {sub "all"}}]
   "Return subreddit rules"
@@ -26,7 +24,6 @@
        (client/format-call
         "/rules.json" :base (sformat sub)))
       :data))
-
 
 (comment
   "Private post listing internals")
@@ -41,7 +38,6 @@
       :data :children
       (utils/parse-posts)))
 
-
 (defn ^:private top
   [credentials & {:keys [sub] :or {sub "all"}}]
   "Return subreddit top posts"
@@ -51,7 +47,6 @@
         "/top.json" :base (sformat sub)))
       :data :children
       (utils/parse-posts)))
-
 
 (defn ^:private hot
   [credentials & {:keys [sub] :or {sub "all"}}]
@@ -63,7 +58,6 @@
       :data :children
       (utils/parse-posts)))
 
-
 (defn ^:private rising
   [credentials & {:keys [sub] :or {sub "all"}}]
   "Return subreddit rising posts"
@@ -73,7 +67,6 @@
         "/rising.json" :base (sformat sub)))
       :data :children
       (utils/parse-posts)))
-
 
 (defn ^:private controversial
   [credentials & {:keys [sub] :or {sub "all"}}]
@@ -85,9 +78,11 @@
       :data :children
       (utils/parse-posts)))
 
+(comment
+  "External listing methods")
 
-(defn ^:public list [creds & {:keys [sub sort_by]
-                              :or {sub "all" sort_by :top}}]
+(defn ^:public list-posts [creds & {:keys [sub sort_by]
+                                    :or {sub "all" sort_by :top}}]
   "Return listing of the subreddit posts, depending
    the sort_by optional parameter."
   (case sort_by
@@ -97,19 +92,3 @@
     :rising (rising creds :sub sub)
     :controversial (controversial creds :sub sub)
     (top creds :sub sub)))
-
-
-(defn ^:public search
-  [credentials & {:keys [query exact include_over_18]
-                  :or {query "" ; Empty resulting nil fields
-                       exact false
-                       include_over_18 true}}]
-  "Compute search request"
-  (-> (client/get-request
-       credentials
-       (client/format-call
-        (str "search.json?q=" query) :base "https://reddit.com/")
-       :p {:exact exact
-           :include_over_18 include_over_18})
-      :data :children
-      (utils/parse-posts)))
