@@ -9,9 +9,27 @@
 
 Rojo is available from Clojars.org. To use it, add the following as a dependency in your favorite build tool.
 
-```clojure
-[rojo $VERSION]
+#### Leiningen/Boot
 ```
+[rojo "0.x.x"]
+```
+#### Clojure CLI/deps.edn
+```
+rojo {:mvn/version "0.x.x"}
+```
+#### Gradle
+```
+compile 'rojo:rojo:0.x.x'
+```
+#### Maven
+```
+<dependency>
+  <groupId>rojo</groupId>
+  <artifactId>rojo</artifactId>
+  <version>0.x.x</version>
+</dependency>
+```
+
 # Basic
 
 In a first time, you should [generate](https://old.reddit.com/prefs/apps/) your credentials.
