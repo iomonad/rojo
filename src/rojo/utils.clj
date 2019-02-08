@@ -10,3 +10,7 @@
     (throw
      (ex-info "Invalid rate, must be between [1-100]."
               {:causes :invalid-rate}))))
+
+(defn parse-posts [coll]
+  "Parse response into pretty data structure"
+  (map #(get-in % [:data]) coll))

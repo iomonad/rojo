@@ -5,17 +5,18 @@
             [slingshot.slingshot :refer :all]
             [rojo.utils :as u]))
 
-(def ^:private *ua*
+(def ^:private ^:dynamic *ua*
   "Client User Agent"
   "http.clj/+io.trosa.rojo")
 
-(def ^:private *api-basename*
+(def ^:private api-basename
   "API url basename"
   "https://reddit.com/api/v1")
 
-(defn format-call [^String res]
+(defn format-call
+  [^String res & {:keys [base] :or {base api-basename}}]
   "Format correct URL API call"
-  (str *api-basename* res))
+  (str base res))
 
 (defn request-token [creds]
   "Retrieve access token from the API"
@@ -42,6 +43,8 @@
                     :headers {"User-Agent" *ua*}
                     :socket-timeout 10000
                     :conn-timeout 10000
+                    :content-type :json
+                    :accept :json
                     :as :json})
        (get :body))
    (catch [:status 401] {}
@@ -57,7 +60,7 @@
                      :socket-timeout 10000
                      :conn-timeout 10000
                      :form-params p
-                     :content-type :json
+                     :accept :json
                      :as :json})
        (get :body))
    (catch [:status 400] {}
