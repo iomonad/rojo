@@ -12,3 +12,9 @@
   (let [raw (map #(get-in % [:data])
                  coll)]
     (map transduce-post raw)))
+
+(defn valid-limit?
+  [^Integer limit]
+  "Trivial predicate for limit
+   interval checking"
+  (<= 0 limit 100))

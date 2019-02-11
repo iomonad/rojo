@@ -37,6 +37,7 @@
                     :headers {"User-Agent" *ua*}
                     :socket-timeout 10000
                     :conn-timeout 10000
+                    :form-params p
                     :content-type :json
                     :accept :json
                     :as :json})

@@ -1,0 +1,6 @@
+* Roadmap
+** DONE Add pagination support with default
+   CLOSED: [2019-02-11 lun. 14:46]
+   - State "DONE"       from "TODO"       [2019-02-11 lun. 14:46]
+** TODO Add support for comments section
+** TODO Add streaming primitives for new posts
