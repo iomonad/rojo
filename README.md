@@ -41,7 +41,49 @@ Once created, you are be able to instanciate your first client:
 
 (let [token (client/request-token
               creds)]
-(sub/search token :query "cats"))
+ ; Use you token with methods 
+ )           
+```
+
+### Result data structure
+
+Posts result list is transduced for convenient hash manipulation:
+
+```clojure
+[
+  { :content { :banned_by , ... }, :post "t3_ap9ran" }
+  { :content { :banned_by , ... }, :post "t3_apf8je" }
+  { :content { :banned_by , ... }, :post "t3_ap4day" }
+  { :content { :banned_by , ... }, :post "t3_apfbl8" }
+  ...
+]
+```
+
+### Searching
+
+```clojure
+(ns foobar
+  (:require [rojo.methods.search :as s]))
+
+(s/search token :query "lisp" :limit 50)
+;; [{:content {...}, :post "t3_ap4dap} ...]
+```
+Note that all key paramaters are mandatory, using
+fallback values, like 25 for limit.
+
+### Subreddit
+
+```clojure
+(ns foobar
+  (:require [rojo.methods.subreddit :as s]))
+  
+(s/list-posts token :sub "programming" :limit 5)
+```
+
+### Streaming
+
+```bash 
+echo TODO
 ```
 
 ## License
