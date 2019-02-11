@@ -3,15 +3,9 @@
   (:require [clj-http.client :as client]
             [cheshire.core :refer :all]
             [slingshot.slingshot :refer :all]
-            [rojo.utils :as u]))
-
-(def ^:private ^:dynamic *ua*
-  "Client User Agent"
-  "http.clj/+io.trosa.rojo")
-
-(def ^:private api-basename
-  "API url basename"
-  "https://reddit.com/api/v1")
+            [rojo.constant :refer :all]
+            [rojo.utils :as u])
+  (:gen-class))
 
 (defn format-call
   [^String res & {:keys [base] :or {base api-basename}}]
@@ -69,17 +63,3 @@
    (catch [:status 301] {}
      (throw (ex-info "Moved permanently"
                      {:causes :moved-permanently})))))
-
-(defn stream-request [token target]
-  "Stream JSON API as lazy sequence (stream)."
-  (try+
-   (-> (client/get target
-                   {:basic-auth [(:access-token token)]
-                    :headers {"User-Agent" *ua*}
-                    :socket-timeout 10000
-                    :conn-timeout 10000
-                    :as :stream})
-       (get :body))
-   (catch [:status 400] {}
-     (throw (ex-info "Invalid server response"
-                     {:causes :server-error})))))
