@@ -25,6 +25,13 @@
 (def ^:private stdout-outlet
   (fn [x] (println (str "STDOUT - " x))))
 
+(defn ^:private newly-pushed [coll id]
+  "Determine new elements using
+   hash id comparaison. If id is
+   nil, in our case the first api poll
+   occur, the full sequence is returned."
+  (take-while #(not= (:post %) id) coll))
+
 (defn ^:public stream-posts
   [credentials &
    {:keys [interval sub callback]
@@ -38,14 +45,20 @@
         cbk (go-loop []
               (let [x (<! sem)]
                 (callback x)) ; Callback call on message
-              (recur))]
+              (recur))
+        trunk (atom nil)]
     (while true
       (let [payload (sub/list-posts
                      credentials
-                     :sub sub :limit 25)]
-        (>!! sem payload)
+                     :sub sub :limit 25)
+            req (newly-pushed payload @trunk)]
+        (when-not (empty? req)
+          (let [head (:post (first req))]
+            (>!! sem req) ; Publish new posts
+            (swap! trunk
+                   :post (first req)))))
         (Thread/sleep
-         (* interval 1000))))))
+         (* interval 1000)))))
 
 (defn ^:public stream-comment
   [credentials ^String id &

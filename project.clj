@@ -1,4 +1,4 @@
-(defproject rojo "0.1.1"
+(defproject rojo "0.1.3"
   :description "Minimal toolkit to interact with Reddit's API,
                 with simplicity in mind."
   :url "https://github.com/iomonad/rojo"
