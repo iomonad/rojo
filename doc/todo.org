@@ -2,5 +2,7 @@
 ** DONE Add pagination support with default
    CLOSED: [2019-02-11 lun. 14:46]
    - State "DONE"       from "TODO"       [2019-02-11 lun. 14:46]
-** TODO Add support for comments section
+** DONE Add support for comments section
+   CLOSED: [2019-02-12 mar. 14:14]
+   - State "DONE"       from "TODO"       [2019-02-12 mar. 14:14]
 ** TODO Add streaming primitives for new posts

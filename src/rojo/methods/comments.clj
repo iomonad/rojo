@@ -2,7 +2,7 @@
   "Comments related methods"
   (:require [rojo.client :as client]
             [rojo.utils :as utils]
-            [slingshot.slingshot :only [try+]]))
+            [slingshot.slingshot :refer [try+]]))
 
 (defn ^:public comments
   [credentials ^String id

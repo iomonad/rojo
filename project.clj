@@ -7,4 +7,5 @@
   :dependencies [[org.clojure/clojure "1.10.0"]
                  [clj-http "3.9.1"]
                  [slingshot "0.12.2"]
-                 [cheshire "5.8.1"]])
+                 [cheshire "5.8.1"]
+                 [org.clojure/core.async "0.4.490"]])

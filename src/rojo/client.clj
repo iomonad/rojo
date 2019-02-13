@@ -57,8 +57,7 @@
                      :form-params p
                      :accept :json
                      :as :json})
-       ;(get :body)
-       )
+       (get :body))
    (catch [:status 400] {}
      (throw (ex-info "Invalid server response"
                      {:causes :server-error})))
