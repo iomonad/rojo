@@ -82,8 +82,16 @@ fallback values, like 25 for limit.
 
 ### Streaming
 
-```bash 
-echo TODO
+Streaming methods are callback based, new events
+are pushed to inlet for the sake of concurency.
+
+```clojure
+
+(defn stream-callback [coll] ; Post datastructure 
+  (println (str "GOT PAYLOAD: " coll)))
+
+(stream/stream-posts token 
+  :interval 1 :callback stream-callback)
 ```
 
 ## License
