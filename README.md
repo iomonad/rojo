@@ -5,6 +5,8 @@
 
  > Simple and idiomatic Reddit API wrapper. 
 
+------
+
 ## Usage
 
 Rojo is available from Clojars.org. To use it, add the following as a dependency in your favorite build tool.
