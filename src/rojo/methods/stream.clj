@@ -50,7 +50,8 @@
     (while true
       (let [payload (sub/list-posts
                      credentials
-                     :sub sub :limit 25)
+                     :sub sub :limit 25
+                     :sort_by "new")
             req (newly-pushed payload @trunk)]
         (when-not (empty? req)
           (let [head (:post (first req))]

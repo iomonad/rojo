@@ -8,9 +8,9 @@
 
 (defn stream-callback [coll]
   (doseq [i coll]
-    (println (str "NEW POST: " (:post i)))))
+    (println (str "NEW POST ->> " (:post i)))))
 
 (let [token (client/request-token
              {:user-client "44ttWVuhyJ7S8w"
               :user-secret "MckC06DXMynW-Cdhfr2naP75eaU"})]
-  (stream/stream-posts token :interval 1 :callback stream-callback :sub "test"))
+  (stream/stream-posts token :interval 3 :callback stream-callback :sub "all"))
